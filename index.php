@@ -1,108 +1,51 @@
 <?php
   
-  require_once "mongodb_library.php";
+  
+  require_once "data_kpu.php";
 
 
   set_time_limit(0);
-  function get_json($url)
-  {
-    $json = array();
-    try {
-      $json = file_get_contents($url);
-      $json = json_decode($json);	
-    } catch (Exception $e) {
-      echo $e->getMessage();	
-    }      
-     return $json;    	
-  	
-  }
+ 
 
-  function isi_data(&$data,$url_wilayah,$url_jml,$idx){
-
-    $tmp=array('kab_kota','kec','lurah','tps');  
-    
-    $json_wilayah = get_json($url_wilayah);
-    //$json_jml = get_json($url_jml);   
-    
-    
-
-    if(!empty($json_wilayah)){
-	    foreach ($json_wilayah as $key_wilayah=>$wilayah) {  
-	       $rec = array();
-	       $rec['kode']=$key_wilayah;
-	       $rec['nama']=$wilayah->nama;
-	       $data[$key_wilayah]['nama']=$wilayah->nama;
-	       //$rec['jml_suara']=array();
-	       /*if(!empty($json_jml)){
-	        if(isset($json_jml->table->$key_wilayah)){
-	         foreach ($json_jml->table->$key_wilayah as $key_suara => $value) {
-	     	       $data[$key_wilayah]['jml_suara'][$key_suara]=$value;
-	         	   //$rec['jml_suara'][$key_suara]=$value;
-	         } 
-            }
-	       }*/
-	       
-	       
-
-	       if($idx==0){
-	          $url_wilayah = 'https://pemilu2019.kpu.go.id/static/json/wilayah/'.$key_wilayah.'.json';  
-	          $url_jml = 'https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp/'.$key_wilayah.'.json';
-	          //$mng = new mongodb_library('kpu_pemilu2019','kd_provinsi');
-              //$mng->insertOne($rec);
-	          isi_data($data[$key_wilayah][$tmp[$idx]],$url_wilayah,$url_jml,$idx+1); 
-              unset($data[$key_wilayah][$tmp[$idx]]);   
-	       }elseif($idx<=3){
-
-	          $url_path = parse_url($url_wilayah, PHP_URL_PATH);
-	          $dirname = pathinfo($url_wilayah, PATHINFO_DIRNAME);
-	          $filename = pathinfo($url_wilayah, PATHINFO_FILENAME);
-
-	          $url_wilayah_tmp = $dirname.'/'.$filename.'/'.$key_wilayah.'.json';
-	           
-	          $url_path = parse_url($url_jml, PHP_URL_PATH);
-	          $dirname = pathinfo($url_jml, PATHINFO_DIRNAME);
-	          $filename = pathinfo($url_jml, PATHINFO_FILENAME);
-
-	          switch ($idx) {
-	       	
-		       	case 1:
-		            //$rec['kode_provinsi']=$filename;
-		            //$mng = new mongodb_library('kpu_pemilu2019','kd_kabkota');
-	                //$mng->insertOne($rec);       		
-		       		break;
-
-		       	case 2:
-		            $rec['kode_kabkota']=$filename;
-		            $mng = new mongodb_library('kpu_pemilu2019','kd_kec');
-	                $mng->insertOne($rec);       		
-		       		break;		
-		       	
-		       	default:
-		       		# code...
-		       		break;
-		       }
-                
-
-	          $url_jml_tmp = $dirname.'/'.$filename.'/'.$key_wilayah.'.json';
-	          isi_data($data[$key_wilayah][$tmp[$idx]],$url_wilayah_tmp,$url_jml_tmp,$idx+1);
-          
-	       }
-
-	    }
-	 }   
- }
-  
-   
-
-
-  $data = array();
-  isi_data($data,'https://pemilu2019.kpu.go.id/static/json/wilayah/0.json','https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp.json',0);
-  echo "<pre>";
+  //$data = array();
+  //isi_data($data,'https://pemilu2019.kpu.go.id/static/json/wilayah/0.json','https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp.json',0);
+  //echo "<pre>";
   //print_r($data);
-  echo "</pre>";
+ //echo "</pre>";
 
+/* $mng_kelurahan = new mongodb_library('kpu_pemilu2019','kd_kelurahan');
+ $mng_tps = new mongodb_library('kpu_pemilu2019','tps');
 
-  
-    
+ $data_kelurahan = $mng_kelurahan->find([],[]);
+ $i=1;
+ foreach ($data_kelurahan as $row) {       
+      $data_tps = $mng_tps->findOne(array('kode_kelurahan'=>$row['kode']));
+      if(empty($data_tps)){
+      	  echo "kelurahan ke-$i kode : $row[kode] <br>";
+		  $url_wilayah = 'https://pemilu2019.kpu.go.id/static/json/wilayah/'.$row['kode_provinsi'].'/'.$row['kode_kabkota'].'/'.$row['kode_kec'].'/'.$row['kode'].'.json';
+		  $json_wilayah = get_json($url_wilayah);  
+		  if(!empty($json_wilayah)){
+			  foreach ($json_wilayah as $key => $value) {
+			  	       $rec = array();
+				       $rec['kode']=$key;
+				       $rec['nama']=$value->nama;
+				       $rec['kode_provinsi']=$row['kode_provinsi'];
+				       $rec['kode_kabkota']=$row['kode_kabkota'];
+				       $rec['kode_kec']=$row['kode_kec']; 
+				       $rec['kode_kelurahan']=$row['kode']; 
+			           
+			           
+			           $data_tps = $mng_tps->findOne(array('kode'=>$key));
+			           if(empty($data_tps)){			             
+			             $mng_tps->insertOne($rec); 
+			           }else{
+			             //echo "$i $key sudah ada !<br>";             
+			           } 
+			                     
+			   }
+		  }
+	}
+	$i++;	  	      
+}*/
   
 ?>
