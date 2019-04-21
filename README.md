@@ -1,3 +1,3 @@
 # pemilu2019
 
-Source code untuk mengambil data hasil hitung dari situs KPU dan kawalpemilu 
+Source code php untuk mengambil data hasil hitung dari situs KPU dan kawalpemilu, hasil pengambilan disimpan ke database mongodb. 
