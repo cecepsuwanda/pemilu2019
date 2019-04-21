@@ -41,8 +41,8 @@ class data_kpu
 	      }
 	  	}  
 
-	  	$json_wilayah = $this->get_json($url_wilayah);
-	  	$json_suara = $this->get_json($url_jml_suara);
+	  	$json_wilayah = @$this->get_json($url_wilayah);
+	  	$json_suara = @$this->get_json($url_jml_suara);
         
         $data = array();
 
@@ -59,12 +59,11 @@ class data_kpu
 	            }      
 	       }                    
 	  	}elseif (!empty($json_suara)) {
-	  		        
-	                    foreach ($json_suara as $key=>$value) {
-	     	                 $data[$key]=$value;
-	         	   
-	                    } 
-                     
+	  		 if($i>=5){  
+	  		    foreach ($json_suara as $key=>$value) {
+	     	        $data[$key]=$value;	         	   
+	            } 
+             }       
 	  	}
         
         return $data;
