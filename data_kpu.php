@@ -58,6 +58,13 @@ class data_kpu
                      }
 	            }      
 	       }                    
+	  	}elseif (!empty($json_suara)) {
+	  		        
+	                    foreach ($json_suara as $key=>$value) {
+	     	                 $data[$key]=$value;
+	         	   
+	                    } 
+                     
 	  	}
         
         return $data;

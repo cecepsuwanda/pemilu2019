@@ -2,16 +2,43 @@
   
   
   require_once "data_kpu.php";
+  require_once "db_pemilu.php";
 
 
   set_time_limit(0);
- 
+  
+
+  $data_kpu = new data_kpu();
+
+ /* $data = $data_kpu->get_data(array('1','1492','1672','1675','900003517'));
+
+  foreach ($data as $key=>$row) {
+  	echo $key."<br>";
+  	echo "<pre>";
+      print_r($row);
+    echo "</pre>";
+  }*/
+
+
+  $db_pemilu = new db_pemilu();
+  $data = $db_pemilu->get_tps(array('kode_provinsi'=>'1'),[]);
+  foreach ($data as $row) {
+    
+    $data_tps = $data_kpu->get_data(array($row['kode_provinsi'],$row['kode_kabkota'],$row['kode_kec'],$row['kode_kelurahan'],$row['kode']));  	
+
+  	echo "<pre>";
+      print_r($row);
+      print_r($data_tps);
+    echo "</pre>";
+
+    
+  }
+
+  
 
   //$data = array();
   //isi_data($data,'https://pemilu2019.kpu.go.id/static/json/wilayah/0.json','https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp.json',0);
-  //echo "<pre>";
-  //print_r($data);
- //echo "</pre>";
+  
 
 /* $mng_kelurahan = new mongodb_library('kpu_pemilu2019','kd_kelurahan');
  $mng_tps = new mongodb_library('kpu_pemilu2019','tps');
