@@ -292,6 +292,83 @@ function update_kelurahan()
 
 }
 
-update_kelurahan();
+function insert_tps()
+{
+    $data_kpu = new data_kpu();
+    $data_kawal = new data_kawal();
+    $db_pemilu = new db_pemilu();
+
+    $data_kelurahans = $db_pemilu->get_kelurahan(array('kode_provinsi'=>'1'),[]);
+    foreach ($data_kelurahans as $data_kelurahan) {
+        
+         $kawal_tps = $data_kawal->get_data($data_kelurahan['kode']);      
+         $kpu_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode']));
+
+         if(!empty($kpu_tps)){  
+           foreach ($kpu_tps as $kode_tps => $data_tps) {
+              $new_rec['kode']= "$kode_tps";
+              $new_rec['nama']= $data_tps['nama'];
+              $new_rec['kode_provinsi']= $data_kelurahan['kode_provinsi'];
+              $new_rec['kode_kabkota']= $data_kelurahan['kode_kabkota'];
+              $new_rec['kode_kec']= $data_kelurahan['kode_kec'];
+              $new_rec['kode_kelurahan']= $data_kelurahan['kode'];
+
+              $tmp = explode(' ',$data_tps['nama']);
+
+              $detail_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode'],$kode_tps));
+
+              if(!empty($detail_tps)){
+                $new_rec['data_kpu']= $detail_tps;
+              }
+             
+              if(!empty($kawal_tps) and isset($kawal_tps[intval($tmp[1])])){                
+                $new_rec['data_kawal']=$kawal_tps[intval($tmp[1])];
+              }
+             $db_pemilu->insert_tps($new_rec);               
+           }           
+         }
+    }
+}
+
+function update_tps()
+{
+    $data_kpu = new data_kpu();
+    $data_kawal = new data_kawal();
+    $db_pemilu = new db_pemilu();
+
+    $data_kelurahans = $db_pemilu->get_kelurahan(array('kode_provinsi'=>'1'),[]);
+    foreach ($data_kelurahans as $data_kelurahan) {
+        
+         $kawal_tps = $data_kawal->get_data($data_kelurahan['kode']);      
+         $kpu_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode']));
+
+         $data_tpss = $db_pemilu->get_tps(array('kode_kelurahan'=>$data_kelurahan['kode']),[]);
+         if(!empty($data_tpss)){  
+           foreach ($data_tpss as $data_tps) {
+              
+              $tmp = explode(' ',$data_tps['nama']);
+
+              $detail_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode'],$data_tps['kode']));
+
+              $new_rec = array();
+
+              if(!empty($detail_tps)){
+                $new_rec['data_kpu']= $detail_tps;
+              }
+             
+              if(!empty($kawal_tps) and isset($kawal_tps[intval($tmp[1])])){                
+                $new_rec['data_kawal']=$kawal_tps[intval($tmp[1])];
+              }
+             
+             if(!empty($new_rec)){
+                $db_pemilu->update_tps(array('_id'=>$data_tps['_id']),array('$set'=>$new_rec),[]);    
+              }
+           }           
+         }
+
+    }
+}
+
+update_tps();
   
 ?>
