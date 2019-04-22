@@ -37,7 +37,7 @@ class db_pemilu
                $hasil=$this->$nm->insertOne($args[0]);
              }	
         }elseif($tmp[0]=='update'){
-        	$hasil=$this->$nm->updateMany($args[2],$args[1],$args[2]);
+        	$hasil=$this->$nm->updateMany($args[0],$args[1],$args[2]);
         }
         return $hasil;
 	}

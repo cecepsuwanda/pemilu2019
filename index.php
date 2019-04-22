@@ -82,6 +82,88 @@ function insert_provinsi()
     }
 }
 
-    
+function update_provinsi()
+{
+    $data_kpu = new data_kpu();
+    $data_kawal = new data_kawal();
+    $db_pemilu = new db_pemilu();
+
+    $kawal_provinsi = $data_kawal->get_data();      
+    $kpu_provinsi = $data_kpu->get_data();
+
+    $data_provinsis = $db_pemilu->get_provinsi([],[]);   
+
+    foreach ($data_provinsis as $data) {
+            
+        
+        $new_rec['data_kpu']= $kpu_provinsi[$data['kode']]['jml_suara'];
+        $new_rec['data_kawal']= $kawal_provinsi[$data['kode']];
+               
+        $db_pemilu->update_provinsi(array('_id'=>$data['_id']),array('$set'=>$new_rec),[]); 
+
+    }
+}
+
+function insert_kabkota()
+{
+    $data_kpu = new data_kpu();
+    $data_kawal = new data_kawal();
+    $db_pemilu = new db_pemilu();
+
+    $data_provinsis = $db_pemilu->get_provinsi([],[]);
+    foreach ($data_provinsis as $data_provinsi) {
+        
+         $kawal_kabkota = $data_kawal->get_data($data_provinsi['kode']);      
+         $kpu_kabkotas = $data_kpu->get_data(array($data_provinsi['kode']));
+         if(!empty($kpu_kabkotas)){  
+           foreach ($kpu_kabkotas as $kode_kabkota => $data_kabkota) {
+              $new_rec['kode']= "$kode_kabkota";
+              $new_rec['nama']= $data_kabkota['nama'];
+              $new_rec['kode_provinsi']= $data_provinsi['kode'];
+              if(isset($data_kabkota['jml_suara'])){  
+                $new_rec['data_kpu']= $data_kabkota['jml_suara'];
+              }
+              if(isset($kawal_kabkota[$kode_kabkota])){
+                $new_rec['data_kawal']= $kawal_kabkota[$kode_kabkota];            
+              }
+
+              $db_pemilu->insert_kabkota($new_rec); 
+           }           
+         } 
+    }
+}
+
+function update_kabkota()
+{
+    $data_kpu = new data_kpu();
+    $data_kawal = new data_kawal();
+    $db_pemilu = new db_pemilu();    
+
+    $data_provinsis = $db_pemilu->get_provinsi([],[]);
+    foreach ($data_provinsis as $data_provinsi) {
+        
+         $kawal_kabkota = $data_kawal->get_data($data_provinsi['kode']);      
+         $kpu_kabkotas = $data_kpu->get_data(array($data_provinsi['kode']));
+         
+
+         $data_kabkotas = $db_pemilu->get_kabkota(array('kode_provinsi'=>$data_provinsi['kode']),[]);
+           foreach ($data_kabkotas as $data_kabkota) {
+              
+              $new_rec=array();
+              if(!empty($kpu_kabkota) and isset($kpu_kabkota[$data_kabkota['kode']]['jml_suara'])){  
+                $new_rec['data_kpu']= $kpu_kabkota[$data_kabkota['kode']]['jml_suara'];
+              }
+              if(!empty($kawal_kabkota) and isset($kawal_kabkota[$data_kabkota['kode']]) ){
+                $new_rec['data_kawal']= $kawal_kabkota[$data_kabkota['kode']];            
+              }
+              if(!empty($new_rec)){
+                $db_pemilu->update_kabkota(array('_id'=>$data_kabkota['_id']),array('$set'=>$new_rec),[]); 
+              }
+           }           
+          
+    }
+}
+
+update_kabkota();
   
 ?>
