@@ -28,11 +28,11 @@ class data_kawal
 	  	
 	  	$url_data   = 'https://kawal-c1.appspot.com/api/c/'.$idx;	  	 	  
 
-	  	$json_data = @$this->get_json($url_data);	  	
+	  	$json_data = $this->get_json($url_data);	  	
         
         $data = array();
 
-	  	if (!empty($json_data)) {	       
+	  	if (!empty($json_data) and isset($json_data->children)) {	       
 	       foreach ($json_data->children as $row) {
 	       	 $kd=$row[0];	       	 
 	         if(isset($json_data->data->$kd) and !empty($json_data->data->$kd) and isset($json_data->data->$kd->sum->sah)){
