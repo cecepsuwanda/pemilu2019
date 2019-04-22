@@ -261,6 +261,37 @@ function insert_kelurahan()
     }
 }
 
-insert_kelurahan();
+function update_kelurahan()
+{
+    $data_kpu = new data_kpu();
+    $data_kawal = new data_kawal();
+    $db_pemilu = new db_pemilu();    
+
+    $data_kecs = $db_pemilu->get_kec([],[]);
+    foreach ($data_kecs as $data_kec) {
+        
+         $kawal_kelurahan = $data_kawal->get_data($data_kec['kode']);      
+         $kpu_kelurahan = $data_kpu->get_data(array($data_kec['kode_provinsi'],$data_kec['kode_kabkota'],$data_kec['kode']));         
+
+           $data_kelurahans = $db_pemilu->get_kelurahan(array('kode_kec'=>$data_kec['kode']),[]);
+           foreach ($data_kelurahans as $data_kelurahan) {
+              
+              $new_rec=array();
+              if(!empty($kpu_kelurahan) and isset($kpu_kelurahan[$data_kelurahan['kode']]['jml_suara'])){  
+                $new_rec['data_kpu']= $kpu_kelurahan[$data_kelurahan['kode']]['jml_suara'];
+              }
+              if(!empty($kawal_kelurahan) and isset($kawal_kelurahan[$data_kelurahan['kode']]) ){
+                $new_rec['data_kawal']= $kawal_kelurahan[$data_kelurahan['kode']];            
+              }
+              if(!empty($new_rec)){
+                $db_pemilu->update_kelurahan(array('_id'=>$data_kelurahan['_id']),array('$set'=>$new_rec),[]); 
+              }
+           }           
+        
+    }
+
+}
+
+update_kelurahan();
   
 ?>
