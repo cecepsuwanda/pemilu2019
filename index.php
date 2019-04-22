@@ -47,7 +47,7 @@
   }
 
 
-  $data_kawal = new data_kawal();
+ /* $data_kawal = new data_kawal();
   $db_pemilu = new db_pemilu();
   
   $data_kelurahan = $db_pemilu->get_kelurahan(array('kode_provinsi'=>'1'),[]);
@@ -62,7 +62,26 @@
         print_r($data);
       echo "</pre>"; 
     }  
-  }
+  }*/
+
+function insert_provinsi()
+{
+    $data_kpu = new data_kpu();
+    $data_kawal = new data_kawal();
+    $db_pemilu = new db_pemilu();
+
+    $hsl = $data_kawal->get_data();
+      
+    $data_provinsis = $data_kpu->get_data();
+    foreach ($data_provinsis as $kode_provinsi=>$data) {
+        $new_rec['kode']= "$kode_provinsi";
+        $new_rec['nama']= $data['nama'];
+        $new_rec['data_kpu']= $data['jml_suara'];
+        $new_rec['data_kawal']= $hsl[$kode_provinsi];
+        $db_pemilu->insert_provinsi($new_rec); 
+    }
+}
+
     
   
 ?>

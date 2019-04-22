@@ -41,8 +41,8 @@ class data_kpu
 	      }
 	  	}  
 
-	  	$json_wilayah = @$this->get_json($url_wilayah);
-	  	$json_suara = @$this->get_json($url_jml_suara);
+	  	$json_wilayah = $this->get_json($url_wilayah);
+	  	$json_suara = $this->get_json($url_jml_suara);
         
         $data = array();
 
