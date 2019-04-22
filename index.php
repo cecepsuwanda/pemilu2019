@@ -2,6 +2,7 @@
   
   
   require_once "data_kpu.php";
+  require_once "data_kawal.php";
   require_once "db_pemilu.php";
 
 
@@ -46,9 +47,22 @@
   }
 
 
-
+  $data_kawal = new data_kawal();
+  $db_pemilu = new db_pemilu();
   
+  $data_kelurahan = $db_pemilu->get_kelurahan(array('kode_provinsi'=>'1'),[]);
+  foreach ($data_kelurahan as $row) {
+    
+    $data = $data_kawal->get_data($row['kode']);    
+    if(!empty($data)){
+      echo "$row[kode]<br>";
+      echo "$row[nama]<br>";
 
-
+      echo "<pre>"; 
+        print_r($data);
+      echo "</pre>"; 
+    }  
+  }
+    
   
 ?>
