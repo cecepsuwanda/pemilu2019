@@ -17,7 +17,7 @@
   <title>Pantau Progress Pilpres</title>
 </head>
 <body>
-    <a href="index.php">Provinsi</a><a href="kabkota.php?p1=<?php echo $kode_provinsi; ?>">KabKota</a>
+    <a href="index.php">Provinsi</a>-><a href="kabkota.php?p1=<?php echo $kode_provinsi; ?>">KabKota</a>
     <table border="1" width="80%">       
        <tr>
            <th rowspan="3" >No</th>
@@ -61,26 +61,28 @@
                 if($jml1!=0){
                   $p1 = ($data_provinsi['data_kpu'][21]/$jml1)*100;
                   $p2 = ($data_provinsi['data_kpu'][22]/$jml1)*100;
+                  $p1color = ($p1>=50 ? 'bgcolor="#00FF00"' : '');
+                  $p2color = ($p2>=50 ? 'bgcolor="#00FF00"' : '');
                 }
                 $total1+=$data_provinsi['data_kpu'][21];
                 $total2+=$data_provinsi['data_kpu'][22];
              }   
 
-             $p1color = ($p1>=50 ? 'bgcolor="#00FF00"' : '');
-             $p2color = ($p2>=50 ? 'bgcolor="#00FF00"' : '');
+             
 
              if(isset($data_provinsi['data_kawal']['sum'])){
                 $jml2=$data_provinsi['data_kawal']['sum']['pas1']+$data_provinsi['data_kawal']['sum']['pas2'];
                 if($jml2!=0){  
                   $p3 = ($data_provinsi['data_kawal']['sum']['pas1']/$jml2)*100;
                   $p4 = ($data_provinsi['data_kawal']['sum']['pas2']/$jml2)*100;
+                  $p3color = ($p3>=50 ? 'bgcolor="#FF0000"' : '');
+                  $p4color = ($p4>=50 ? 'bgcolor="#FF0000"' : '');
                 }
                 $total3+=$data_provinsi['data_kawal']['sum']['pas1'];
                 $total4+=$data_provinsi['data_kawal']['sum']['pas2'];
               }  
              
-             $p3color = ($p3>=50 ? 'bgcolor="#FF0000"' : '');
-             $p4color = ($p4>=50 ? 'bgcolor="#FF0000"' : '');
+             
 
              $str.='<tr>';
                $str.="<td>$i</td>";               

@@ -18,7 +18,7 @@
   <title>Pantau Progress Pilpres</title>
 </head>
 <body>
-    <a href="index.php">Provinsi</a><a href="kabkota.php?p1=<?php echo $kode_provinsi; ?>">KabKota</a><a href="kec.php?p1=<?php echo $kode_provinsi; ?>&p2=<?php echo $kode_kabkota; ?>">Kecamatan</a>
+    <a href="index.php">Provinsi</a>-><a href="kabkota.php?p1=<?php echo $kode_provinsi; ?>">KabKota</a>-><a href="kec.php?p1=<?php echo $kode_provinsi; ?>&p2=<?php echo $kode_kabkota; ?>">Kecamatan</a>
     <table border="1" width="80%">       
        <tr>
            <th rowspan="3" >No</th>
