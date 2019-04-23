@@ -7,10 +7,12 @@ class mongodb_library
 {
 
    private $collection;
+   public $msg;
 
    function __construct($db,$collection)
    {
      $this->collection = (new MongoDB\Client)->$db->$collection;
+     $this->msg = '';
    }
 
 
@@ -18,10 +20,10 @@ class mongodb_library
    {
 		$insertOneResult = $this->collection->insertOne($data);
 
-		echo "Inserted ".$insertOneResult->getInsertedCount()." document(s) <br>";
-        echo '<pre>';
-		var_dump($insertOneResult->getInsertedId());
-		echo '</pre>';
+		$this->msg="Inserted ".$insertOneResult->getInsertedCount()." document(s) <br>";
+    //echo '<pre>';
+		return $insertOneResult->getInsertedId();
+		//echo '</pre>';
 
    }
     
@@ -29,10 +31,10 @@ class mongodb_library
    {
 		$insertManyResult = $this->collection->insertMany($data);
 
-		echo "Inserted ".$insertManyResult->getInsertedCount()." document(s) <br>";
-    echo '<pre>';
-		var_dump($insertManyResult->getInsertedIds());
-		echo '</pre>';
+		$this->msg="Inserted ".$insertManyResult->getInsertedCount()." document(s) <br>";
+    //echo '<pre>';
+		return $insertManyResult->getInsertedIds();
+		//echo '</pre>';
 
    } 
 
@@ -62,8 +64,8 @@ class mongodb_library
    public function updateMany($where,$set,$option)
     {
       $updateResult = $this->collection->updateMany($where,$set,$option);
-      echo "Matched ".$updateResult->getMatchedCount()." document(s)<br>" ;
-      echo "Modified ".$updateResult->getModifiedCount()." document(s)<br>";
+      $this->msg= "Matched ".$updateResult->getMatchedCount()." document(s)<br>" ;
+      $this->msg.= "Modified ".$updateResult->getModifiedCount()." document(s)<br>";
     }
 
 }
