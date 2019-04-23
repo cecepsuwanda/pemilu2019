@@ -19,6 +19,7 @@ class db_pemilu
 		$this->tb_kec = new mongodb_library('kpu_pemilu2019','kd_kec');
 		$this->tb_kelurahan = new mongodb_library('kpu_pemilu2019','kd_kelurahan');
 		$this->tb_tps = new mongodb_library('kpu_pemilu2019','tps');
+        $this->tb_progres = new mongodb_library('kpu_pemilu2019','progres');
 	}
 
 	public function __call($name,$args)

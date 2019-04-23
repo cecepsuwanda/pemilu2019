@@ -330,7 +330,22 @@ function update_tps()
     }
 }
 
-echo "update provinsi <br>";
+$id = uniqid(); 
+
+$db_pemilu = new db_pemilu();
+$new_rec=array();
+$new_rec['kode']=$id;
+$new_rec['nama']='Input Provinsi';
+$new_rec['progress']='Input Provinsi';
+$new_rec['waktu_mulai']=date("Y-m-d H:i:s");
+$new_rec['waktu_selesai']=date("Y-m-d H:i:s");;
+$db_pemilu->insert_progres($new_rec);
+
+$new_rec = array();
+$new_rec['progress']='Kode-Nama-Status';
+$db_pemilu->update_progres(array('kode'=>"$id"),array('$set'=>$new_rec),[]);
+
+/*echo "update provinsi <br>";
 update_provinsi();
 echo "insert kabkota <br>";
 insert_kabkota();
@@ -343,6 +358,6 @@ update_kabkota();
 echo "update kelurahan <br>";
 update_kelurahan();
 echo "insert kelurahan <br>";
-insert_kelurahan();
+insert_kelurahan();*/
   
 ?>
