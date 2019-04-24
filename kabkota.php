@@ -53,34 +53,40 @@
            $total2=0;
            $total3=0;
            $total4=0;
-           foreach ($data_provinsis as $data_provinsi) {             
+           foreach ($data_provinsis as $data_provinsi) { 
 
              if(isset($data_provinsi['data_kpu'])){
-                $jml=$data_provinsi['data_kpu'][21]+$data_provinsi['data_kpu'][22];
-                $p1 = ($data_provinsi['data_kpu'][21]/$jml)*100;
-                $p2 = ($data_provinsi['data_kpu'][22]/$jml)*100;
+                $jml1=$data_provinsi['data_kpu'][21]+$data_provinsi['data_kpu'][22];
+                if($jml1!=0){
+                  $p1 = ($data_provinsi['data_kpu'][21]/$jml1)*100;
+                  $p2 = ($data_provinsi['data_kpu'][22]/$jml1)*100;
+                  $p1color = ($p1>=50 ? 'bgcolor="#00FF00"' : '');
+                  $p2color = ($p2>=50 ? 'bgcolor="#00FF00"' : '');    
+                }
                 $total1+=$data_provinsi['data_kpu'][21];
                 $total2+=$data_provinsi['data_kpu'][22];
              }   
 
-             $p1color = ($p1>=50 ? 'bgcolor="#00FF00"' : '');
-             $p2color = ($p2>=50 ? 'bgcolor="#00FF00"' : '');
+             
 
              if(isset($data_provinsi['data_kawal']['sum'])){
-                $jml=$data_provinsi['data_kawal']['sum']['pas1']+$data_provinsi['data_kawal']['sum']['pas2'];
-                $p3 = ($data_provinsi['data_kawal']['sum']['pas1']/$jml)*100;
-                $p4 = ($data_provinsi['data_kawal']['sum']['pas2']/$jml)*100;
+                $jml2=$data_provinsi['data_kawal']['sum']['pas1']+$data_provinsi['data_kawal']['sum']['pas2'];
+                if($jml2!=0){  
+                  $p3 = ($data_provinsi['data_kawal']['sum']['pas1']/$jml2)*100;
+                  $p4 = ($data_provinsi['data_kawal']['sum']['pas2']/$jml2)*100;
+                  $p3color = ($p3>=50 ? 'bgcolor="#FF0000"' : '');
+                  $p4color = ($p4>=50 ? 'bgcolor="#FF0000"' : '');
+                }
                 $total3+=$data_provinsi['data_kawal']['sum']['pas1'];
                 $total4+=$data_provinsi['data_kawal']['sum']['pas2'];
               }  
              
-             $p3color = ($p3>=50 ? 'bgcolor="#FF0000"' : '');
-             $p4color = ($p4>=50 ? 'bgcolor="#FF0000"' : '');
+             
 
              $str.='<tr>';
                $str.="<td>$i</td>";               
                $str.="<td><a href='kec.php?p1=$data_provinsi[kode_provinsi]&p2=$data_provinsi[kode]'>$data_provinsi[nama]</a></td>";
-               if(isset($data_provinsi['data_kpu'])){  
+               if(isset($data_provinsi['data_kpu']) and ($jml1!=0)){  
                  $str.='<td align="right">'.number_format($data_provinsi['data_kpu'][21],0,',','.').'</td>';
                  $str.='<td align="right" '.$p1color.'>'.number_format($p1,2,',','.').'</td>';
                  $str.='<td align="right">'.number_format($data_provinsi['data_kpu'][22],0,',','.').'</td>';;
@@ -89,7 +95,7 @@
                   $str.='<td colspan="4" align="center" >Tidak Ada Data</td>';  
                }
 
-               if(isset($data_provinsi['data_kawal']['sum'])){
+               if(isset($data_provinsi['data_kawal']['sum']) and ($jml2!=0)){
                  $str.='<td align="right">'.number_format($data_provinsi['data_kawal']['sum']['pas1'],0,',','.').'</td>';
                  $str.='<td align="right"'.$p3color.'>'.number_format($p3,2,',','.').'</td>';
                  $str.='<td align="right">'.number_format($data_provinsi['data_kawal']['sum']['pas2'],0,',','.').'</td>';;

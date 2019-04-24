@@ -260,52 +260,66 @@ class proses
 
 	}
 
-	function insert_tps()
+	function insert_tps($kode_provinsi=0,$kode_kabkota=0,$kode_kec=0,$kode_kelurahan=0)
 	{
 	    $data_kpu = new data_kpu();
 	    $data_kawal = new data_kawal();
 	    $db_pemilu = new db_pemilu();
 
-	    $data_kelurahans = $db_pemilu->get_kelurahan(array('kode_provinsi'=>'1'),[]);
+	    $data_kelurahans = (($kode_provinsi==0) and ($kode_kabkota==0) and ($kode_kec==0) and ($kode_kelurahan==0)) ? $db_pemilu->get_kelurahan([],[]) : $db_pemilu->get_kelurahan(['kode_provinsi'=>$kode_provinsi,'kode_kabkota'=>$kode_kabkota,'kode_kec'=>$kode_kec,'kode'=>$kode_kelurahan],[]);
 	    foreach ($data_kelurahans as $data_kelurahan) {
 	        
-	         $kawal_tps = $data_kawal->get_data($data_kelurahan['kode']);      
-	         $kpu_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode']));
+	         $kawal_tps = $data_kawal->get_data($data_kelurahan['kode']);
+             $kpu_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode']));
 
-	         if(!empty($kpu_tps)){  
-	           foreach ($kpu_tps as $kode_tps => $data_tps) {
-	              $new_rec['kode']= "$kode_tps";
-	              $new_rec['nama']= $data_tps['nama'];
-	              $new_rec['kode_provinsi']= $data_kelurahan['kode_provinsi'];
-	              $new_rec['kode_kabkota']= $data_kelurahan['kode_kabkota'];
-	              $new_rec['kode_kec']= $data_kelurahan['kode_kec'];
-	              $new_rec['kode_kelurahan']= $data_kelurahan['kode'];
+	         if(!empty($kpu_tps)){  	           
+	           foreach ($kpu_tps as $kode_tps => $data_tps) {	              
+	              
+		              $new_rec['kode']= "$kode_tps";
+		              $new_rec['nama']= $data_tps['nama'];
+		              $new_rec['kode_provinsi']= $data_kelurahan['kode_provinsi'];
+		              $new_rec['kode_kabkota']= $data_kelurahan['kode_kabkota'];
+		              $new_rec['kode_kec']= $data_kelurahan['kode_kec'];
+		              $new_rec['kode_kelurahan']= $data_kelurahan['kode'];
 
-	              $tmp = explode(' ',$data_tps['nama']);
+		               $tmp = explode(' ',$data_tps['nama']);
+	                                    
+		               $detail_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode'],$kode_tps));
+	                  
+	 
+		              if(!empty($detail_tps)){
+		                $new_rec['data_kpu']= $detail_tps;
+		              }
+		             
+		              if(!empty($kawal_tps) and isset($kawal_tps[intval($tmp[1])])){
+		                $new_rec['data_kawal']['sum']=$kawal_tps[intval($tmp[1])]->sum;
+		                $new_rec['data_kawal']['ts']=$kawal_tps[intval($tmp[1])]->ts;
+	                    foreach ($kawal_tps[intval($tmp[1])]->photos as $key => $value) {
+	                    	$tmp_arr=array();
+	                    	$tmp_arr['url']=$key;
+	                    	foreach ($value as $key1 => $value1) {
+	                    		$tmp_arr[$key1]=$value1;                    		
+	                    	}
+	                    	$new_rec['data_kawal']['photos'][]=$tmp_arr;
+	                    }
+		                 
+		              }
 
-	              $detail_tps = $data_kpu->get_data(array($data_kelurahan['kode_provinsi'],$data_kelurahan['kode_kabkota'],$data_kelurahan['kode_kec'],$data_kelurahan['kode'],$kode_tps));
-
-	              if(!empty($detail_tps)){
-	                $new_rec['data_kpu']= $detail_tps;
-	              }
-	             
-	              if(!empty($kawal_tps) and isset($kawal_tps[intval($tmp[1])])){                
-	                $new_rec['data_kawal']=$kawal_tps[intval($tmp[1])];
-	              }
-	             $db_pemilu->insert_tps($new_rec);               
+		             $db_pemilu->insert_tps($new_rec);
+                   
 	           }           
 	         }
 	         sleep(2);
 	    }
 	}
 
-	function update_tps()
+	function update_tps($kode_provinsi=0,$kode_kabkota=0,$kode_kec=0,$kode_kelurahan=0)
 	{
 	    $data_kpu = new data_kpu();
 	    $data_kawal = new data_kawal();
 	    $db_pemilu = new db_pemilu();
 
-	    $data_kelurahans = $db_pemilu->get_kelurahan(array('kode_provinsi'=>'1'),[]);
+	    $data_kelurahans = (($kode_provinsi==0) and ($kode_kabkota==0) and ($kode_kec==0) and ($kode_kelurahan==0)) ? $db_pemilu->get_kelurahan([],[]) : $db_pemilu->get_kelurahan(['kode_provinsi'=>$kode_provinsi,'kode_kabkota'=>$kode_kabkota,'kode_kec'=>$kode_kec,'kode'=>$kode_kelurahan],[]);
 	    foreach ($data_kelurahans as $data_kelurahan) {
 	        
 	         $kawal_tps = $data_kawal->get_data($data_kelurahan['kode']);      
@@ -325,8 +339,17 @@ class proses
 	                $new_rec['data_kpu']= $detail_tps;
 	              }
 	             
-	              if(!empty($kawal_tps) and isset($kawal_tps[intval($tmp[1])])){                
-	                $new_rec['data_kawal']=$kawal_tps[intval($tmp[1])];
+	              if(!empty($kawal_tps) and isset($kawal_tps[intval($tmp[1])])){
+	              	$new_rec['data_kawal']['sum']=$kawal_tps[intval($tmp[1])]->sum;
+	                $new_rec['data_kawal']['ts']=$kawal_tps[intval($tmp[1])]->ts;
+                    foreach ($kawal_tps[intval($tmp[1])]->photos as $key => $value) {
+                    	$tmp_arr=array();
+                    	$tmp_arr['url']=$key;
+                    	foreach ($value as $key1 => $value1) {
+                    		$tmp_arr[$key1]=$value1;                    		
+                    	}
+                    	$new_rec['data_kawal']['photos'][]=$tmp_arr;
+                    }
 	              }
 	             
 	             if(!empty($new_rec)){
