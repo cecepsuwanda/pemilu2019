@@ -40,7 +40,7 @@ update_kelurahan();
 echo "insert kelurahan <br>";
 insert_kelurahan();*/
  $proses = new proses();
- $proses->update_provinsi(); 
+ $update_err=$proses->update_provinsi(); 
 ?>
 
 <!DOCTYPE html>
@@ -141,6 +141,8 @@ insert_kelurahan();*/
 
         ?>
     </table>
-
+     <?php 
+      echo $update_err;
+    ?>
 </body>
 </html>

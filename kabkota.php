@@ -6,8 +6,8 @@
   $kode_provinsi=$_GET['p1'];
 
  $proses = new proses();
- $proses->insert_kabkota($kode_provinsi);
- $proses->update_kabkota($kode_provinsi); 
+ $insert_err=$proses->insert_kabkota($kode_provinsi);
+ $update_err=$proses->update_kabkota($kode_provinsi); 
 ?>
 
 <!DOCTYPE html>
@@ -107,12 +107,20 @@
              $i++;
            }
            
-           $jml=$total1+$total2;
-           $p1total = ($total1/$jml)*100;
-           $p2total = ($total2/$jml)*100;
-           $jml=$total3+$total4;
-           $p3total = ($total3/$jml)*100;
-           $p4total = ($total4/$jml)*100;
+           $p1total=0;
+           $p2total=0;
+           $p3total=0;
+           $p4total=0;
+           $jml1=$total1+$total2;
+           if($jml1!=0){
+               $p1total = ($total1/$jml1)*100;
+               $p2total = ($total2/$jml1)*100;
+           }
+           $jml2=$total3+$total4;
+           if($jml2!=0){
+               $p3total = ($total3/$jml2)*100;
+               $p4total = ($total4/$jml2)*100;
+            }
 
            $tmpstr='<tr>';
                $tmpstr.="<td colspan='2' >TOTAL</td>";               
@@ -130,6 +138,9 @@
 
         ?>
     </table>
-
+    <?php 
+      echo $insert_err;
+      echo $update_err;
+    ?>
 </body>
 </html>

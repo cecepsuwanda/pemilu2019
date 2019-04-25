@@ -8,8 +8,8 @@
   $kode_kec=$_GET['p3'];
 
  $proses = new proses();
- $proses->insert_kelurahan($kode_provinsi,$kode_kabkota,$kode_kec);
- $proses->update_kelurahan($kode_provinsi,$kode_kabkota,$kode_kec); 
+ $insert_err=$proses->insert_kelurahan($kode_provinsi,$kode_kabkota,$kode_kec);
+ $update_err=$proses->update_kelurahan($kode_provinsi,$kode_kabkota,$kode_kec); 
 ?>
 
 <!DOCTYPE html>
@@ -142,6 +142,9 @@
 
         ?>
     </table>
-
+    <?php 
+      echo $insert_err;
+      echo $update_err;
+    ?>
 </body>
 </html>

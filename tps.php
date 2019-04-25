@@ -22,7 +22,7 @@
     <a href="index.php">Provinsi</a>->
     <a href="kabkota.php?p1=<?php echo $kode_provinsi; ?>">KabKota</a>->
     <a href="kec.php?p1=<?php echo $kode_provinsi; ?>&p2=<?php echo $kode_kabkota; ?>">Kecamatan</a>->
-    <a href="kec.php?p1=<?php echo $kode_provinsi; ?>&p2=<?php echo $kode_kabkota; ?>&p3=<?php echo $kode_kelurahan; ?>">Kelurahan</a>
+    <a href="kelurahan.php?p1=<?php echo $kode_provinsi; ?>&p2=<?php echo $kode_kabkota; ?>&p3=<?php echo $kode_kec; ?>">Kelurahan</a>
     <table border="1" width="80%">       
        <tr>
            <th rowspan="3" >No</th>
@@ -159,7 +159,6 @@
     <?php 
       echo $insert_err;
       echo $update_err;
-
     ?>
 
 </body>

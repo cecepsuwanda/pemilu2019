@@ -5,7 +5,7 @@
  */
 class data_kawal 
 {
-	
+	public $err_msg;
 	function __construct()
 	{
 		# code...
@@ -14,12 +14,22 @@ class data_kawal
 	  private function get_json($url)
 	  {
 	    $json = array();
+	    
+	    set_error_handler(
+		    function ($severity, $message, $file, $line) {
+		        throw new ErrorException($message, $severity, $severity, $file, $line);
+		    }
+		);
+
 	    try {
 	      $json = file_get_contents($url);
 	      $json = json_decode($json);	
 	    } catch (Exception $e) {
-	      	
-	    }      
+	      $this->err_msg.=$e->getMessage().'<br>';	
+	    }
+
+	    restore_error_handler();      
+	    
 	     return $json;    		  	
 	  }
 

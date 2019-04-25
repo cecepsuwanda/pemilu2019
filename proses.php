@@ -35,7 +35,7 @@ class proses
 	        $db_pemilu->insert_provinsi($new_rec); 
 	    }
 
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 	}
 
 	function update_provinsi()
@@ -64,7 +64,7 @@ class proses
 	       } 
 
 	    }
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 	}
 
 	function insert_kabkota($kode_provinsi=0)
@@ -96,7 +96,7 @@ class proses
 
 	         //sleep(2); 
 	    }
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 	}
 
 	function update_kabkota($kode_provinsi=0)
@@ -128,7 +128,7 @@ class proses
 	           }           
 	          //sleep(2);
 	    }
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 	}
 
 	function insert_kec($kode_provinsi=0,$kode_kabkota=0)
@@ -137,7 +137,8 @@ class proses
 	    $data_kawal = new data_kawal();
 	    $db_pemilu = new db_pemilu();
 
-	    $data_kabkotas = ($kode_provinsi==0) and ($kode_kabkota==0) ? $db_pemilu->get_kabkota([],[]) : $db_pemilu->get_kabkota(['kode_provinsi'=>$kode_provinsi,'kode'=>$kode_kabkota],[]);
+	    $data_kabkotas = (($kode_provinsi==0) and ($kode_kabkota==0)) ? $db_pemilu->get_kabkota([],[]) : $db_pemilu->get_kabkota(['kode_provinsi'=>$kode_provinsi,'kode'=>$kode_kabkota],[]);
+	    
 	    if(!empty($data_kabkotas)){
 		    foreach ($data_kabkotas as $data_kabkota) {	        
 		         $kawal_kec = $data_kawal->get_data($data_kabkota['kode']);      
@@ -160,10 +161,10 @@ class proses
 		              $db_pemilu->insert_kec($new_rec); 
 		           }           
 		         }
-		         //sleep(2);
+		         sleep(2);
 		    }
 		 }
-		 return $data_kpu->err_msg;   
+		 return $data_kpu->err_msg.$data_kawal->err_msg;   
 	}
 
 	function update_kec($kode_provinsi=0,$kode_kabkota=0)
@@ -172,7 +173,7 @@ class proses
 	    $data_kawal = new data_kawal();
 	    $db_pemilu = new db_pemilu();    
 
-	    $data_kabkotas = ($kode_provinsi==0) and ($kode_kabkota==0) ? $db_pemilu->get_kabkota([],[]) : $db_pemilu->get_kabkota(['kode_provinsi'=>$kode_provinsi,'kode'=>$kode_kabkota],[]);
+	    $data_kabkotas = (($kode_provinsi==0) and ($kode_kabkota==0)) ? $db_pemilu->get_kabkota([],[]) : $db_pemilu->get_kabkota(['kode_provinsi'=>$kode_provinsi,'kode'=>$kode_kabkota],[]);
         if(!empty($data_kabkotas)){   
 		    foreach ($data_kabkotas as $data_kabkota) {
 		        
@@ -193,10 +194,10 @@ class proses
 		                $db_pemilu->update_kec(array('_id'=>$data_kec['_id']),array('$set'=>$new_rec),[]); 
 		              }
 		           } 
-		           //sleep(2);
+		           sleep(2);
 		    }
 		 }
-		 return $data_kpu->err_msg;   
+		 return $data_kpu->err_msg.$data_kawal->err_msg;   
 	}
 
 
@@ -232,9 +233,9 @@ class proses
 	           }           
 	         }
 
-	         //sleep(2);
+	         sleep(2);
 	    }
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 	}
 
 	function update_kelurahan($kode_provinsi=0,$kode_kabkota=0,$kode_kec=0)
@@ -263,9 +264,9 @@ class proses
 	                $db_pemilu->update_kelurahan(array('_id'=>$data_kelurahan['_id']),array('$set'=>$new_rec),[]); 
 	              }
 	           }
-	           //sleep(2);
+	           sleep(2);
 	    }
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 
 	}
 
@@ -318,9 +319,9 @@ class proses
                    
 	           }           
 	         }
-	         //sleep(2);
+	         sleep(2);
 	    }
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 	}
 
 	function update_tps($kode_provinsi=0,$kode_kabkota=0,$kode_kec=0,$kode_kelurahan=0)
@@ -368,9 +369,9 @@ class proses
 	           }           
 	         }
 
-	         //sleep(2);
+	         sleep(2);
 	    }
-	    return $data_kpu->err_msg;
+	    return $data_kpu->err_msg.$data_kawal->err_msg;
 	}
 }
 

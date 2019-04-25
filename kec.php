@@ -7,8 +7,8 @@
   $kode_kabkota=$_GET['p2'];
 
  $proses = new proses();
- $proses->insert_kec($kode_provinsi,$kode_kabkota);
- $proses->update_kec($kode_provinsi,$kode_kabkota); 
+ $insert_err=$proses->insert_kec($kode_provinsi,$kode_kabkota);
+ $update_err=$proses->update_kec($kode_provinsi,$kode_kabkota); 
 ?>
 
 <!DOCTYPE html>
@@ -139,6 +139,9 @@
 
         ?>
     </table>
-
+    <?php 
+      echo $insert_err;
+      echo $update_err;
+    ?>
 </body>
 </html>
