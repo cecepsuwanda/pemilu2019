@@ -5,26 +5,38 @@
  */
 class data_kpu 
 {
+	public $err_msg;
 	
 	function __construct()
 	{
-		# code...
+		$this->err_msg='';
 	}
 
 	  private function get_json($url)
 	  {
 	    $json = array();
+	    
+        set_error_handler(
+		    function ($severity, $message, $file, $line) {
+		        throw new ErrorException($message, $severity, $severity, $file, $line);
+		    }
+		);
+
 	    try {
 	      $json = file_get_contents($url);
 	      $json = json_decode($json);	
 	    } catch (Exception $e) {
-	      	
+	      	 $this->err_msg.=$e->getMessage().'<br>';
 	    }      
+	    
+	    restore_error_handler();
+
 	     return $json;    		  	
 	  }
 
 	  public function get_data($args=array())
 	  {
+	  	$i=1;
 	  	if(empty($args)){
 	  	  $url_wilayah   = 'https://pemilu2019.kpu.go.id/static/json/wilayah/0.json';
 	  	  $url_jml_suara = 'https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp.json';
@@ -33,7 +45,7 @@ class data_kpu
 	      $url_jml_suara = 'https://pemilu2019.kpu.go.id/static/json/hhcw/ppwp/';		
 	      
 	      $jml = count($args);
-	      $i=1;
+	      
 	      foreach ($args as $key => $value) {
 	      	$url_wilayah.= $value . (($i<$jml) ? '/' : '.json');
 	      	$url_jml_suara.= $value . (($i<$jml) ? '/' : '.json');
@@ -41,10 +53,13 @@ class data_kpu
 	      }
 	  	}  
 
+	  	
 	  	//if($i<5){
 	  	  $json_wilayah = $this->get_json($url_wilayah);
-	  	//}
+	  	//}	
+
 	  	  $json_suara = $this->get_json($url_jml_suara);
+
         
         $data = array();
 

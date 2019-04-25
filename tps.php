@@ -9,8 +9,8 @@
   $kode_kelurahan=$_GET['p4'];
 
  $proses = new proses();
- $proses->insert_tps($kode_provinsi,$kode_kabkota,$kode_kec,$kode_kelurahan);
- $proses->update_tps($kode_provinsi,$kode_kabkota,$kode_kec,$kode_kelurahan); 
+ $insert_err=$proses->insert_tps($kode_provinsi,$kode_kabkota,$kode_kec,$kode_kelurahan);
+ $update_err=$proses->update_tps($kode_provinsi,$kode_kabkota,$kode_kec,$kode_kelurahan); 
 ?>
 
 <!DOCTYPE html>
@@ -154,9 +154,13 @@
              $tmpstr.='</tr>';             
 
            echo $tmpstr.$str;  
-
         ?>
     </table>
+    <?php 
+      echo $insert_err;
+      echo $update_err;
+
+    ?>
 
 </body>
 </html>
