@@ -1,6 +1,7 @@
 <?php
    
   require_once "proses.php";
+  require_once "fumum.php";
   set_time_limit(0);
   
   $kode_provinsi=$_GET['p1'];
@@ -23,6 +24,39 @@
     <a href="kabkota.php?p1=<?php echo $kode_provinsi; ?>">KabKota</a>->
     <a href="kec.php?p1=<?php echo $kode_provinsi; ?>&p2=<?php echo $kode_kabkota; ?>">Kecamatan</a>->
     <a href="kelurahan.php?p1=<?php echo $kode_provinsi; ?>&p2=<?php echo $kode_kabkota; ?>&p3=<?php echo $kode_kec; ?>">Kelurahan</a>
+    <table border="1" width="80%"> 
+        <?php 
+           $db_pemilu = new db_pemilu();
+           $data_provinsis = $db_pemilu->get_kelurahan(['kode'=>$kode_kelurahan],[]);
+          
+          $i=1;
+           $str='';
+           $total1=array(0,0);          
+           $total2=array(0,0);
+           foreach ($data_provinsis as $data_provinsi) {
+             $str.='<tr>';
+               $str.="<td>$i</td>";               
+               $str.="<td>$data_provinsi[nama]</td>";               
+               $jml=array($data_provinsi['data_kpu'][21],$data_provinsi['data_kpu'][22]);
+               $str.=jumlahkan($jml,'bgcolor="#00FF00"',$total1);               
+               
+               $str.='<td align="right">'.number_format($data_provinsi['data_kpu']['persen'],2,',','.').'</td>'; 
+               if(isset($data_provinsi['data_kawal'])){
+                  $jml=array($data_provinsi['data_kawal']['sum']['pas1'],$data_provinsi['data_kawal']['sum']['pas2']);
+                  $str.=jumlahkan($jml,'bgcolor="#FF0000"',$total2);               
+               }else{
+                  $str.='<td colspan="4" align="center" >Tidak Ada Data</td>';
+               }
+             $str.='</tr>';              
+             $i++;
+           }          
+           
+           echo table_header('Kelurahan').$str;    
+
+        ?>
+    </table>
+    <br><br>
+
     <table border="1" width="80%">       
        <tr>
            <th rowspan="3" >No</th>

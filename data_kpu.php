@@ -53,10 +53,10 @@ class data_kpu
 	      }
 	  	}  
 
-	     $json_wilayah=array();
-	     if($i<5){		  	
+	     //$json_wilayah=array();
+	     //if($i<5){		  	
 	  	   $json_wilayah = $this->get_json($url_wilayah);
-	  	  }
+	  	  //}
 	  	  $json_suara = $this->get_json($url_jml_suara);
 
         

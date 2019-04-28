@@ -284,7 +284,7 @@ class proses
 
 	         if(!empty($kpu_tps)){  	           
 	           foreach ($kpu_tps as $kode_tps => $data_tps) {	              
-	              
+	                  //print_r($kpu_tps);
 		              $new_rec['kode']= "$kode_tps";
 		              $new_rec['nama']= $data_tps['nama'];
 		              $new_rec['kode_provinsi']= $data_kelurahan['kode_provinsi'];
