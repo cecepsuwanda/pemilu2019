@@ -53,6 +53,7 @@
                $tmpstr.= jumlahkan($total1);
                $tmpstr.='<td ></td>';
                $tmpstr.= jumlahkan($total2,'bgcolor="#ffbf00"');
+               $tmpstr.='<td ></td>';
              $tmpstr.='</tr>';             
 
            echo table_header('Provinsi').$tmpstr.$str;  
