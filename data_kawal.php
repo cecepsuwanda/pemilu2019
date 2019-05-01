@@ -46,9 +46,10 @@ class data_kawal
 	       foreach ($json_data->children as $row) {
 	       	 $kd=$row[0];	       	 
 	         if(isset($json_data->data->$kd) and !empty($json_data->data->$kd) and isset($json_data->data->$kd->sum->sah)){
-	           $data[$kd]=$json_data->data->$kd;	         
+	           $data[$kd]=$json_data->data->$kd;
+	           $data[$kd]->sum->jml_tps=$row[2];	         
 	         }   
-
+             
 	       }	                         
 	  	}
         

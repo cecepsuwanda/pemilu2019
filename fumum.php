@@ -1,6 +1,6 @@
 <?php
 
-         function jumlahkan($jml=array(),$color='bgcolor="#00FF00"',&$total=array(0,0))
+         function jumlahkan($jml=array(),$color='bgcolor="#ffbf00"',&$total=array(0,0))
            {
              $total_jml = $jml[0]+$jml[1];
              $p=array(0,0);

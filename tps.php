@@ -38,12 +38,15 @@
                $str.="<td>$i</td>";               
                $str.="<td>$data_provinsi[nama]</td>";               
                $jml=array($data_provinsi['data_kpu'][21],$data_provinsi['data_kpu'][22]);
-               $str.=jumlahkan($jml,'bgcolor="#00FF00"',$total1);               
+               $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total1);               
                
-               $str.='<td align="right">'.number_format($data_provinsi['data_kpu']['persen'],2,',','.').'</td>'; 
+               $p = $data_provinsi['data_kpu']['persen'];
+               $pcolor = $p>90 ? 'bgcolor="#0080ff"': ($p>80 ? 'bgcolor="#00ffff"': ($p>50 ? 'bgcolor="#ffff00"' :'')) ;
+
+               $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';
                if(isset($data_provinsi['data_kawal'])){
                   $jml=array($data_provinsi['data_kawal']['sum']['pas1'],$data_provinsi['data_kawal']['sum']['pas2']);
-                  $str.=jumlahkan($jml,'bgcolor="#FF0000"',$total2);               
+                  $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total2);               
                }else{
                   $str.='<td colspan="4" align="center" >Tidak Ada Data</td>';
                }
@@ -105,8 +108,8 @@
                 if($jml1!=0){
                   $p1 = ($data_provinsi['data_kpu']['chart'][21]/$jml1)*100;
                   $p2 = ($data_provinsi['data_kpu']['chart'][22]/$jml1)*100;
-                  $p1color = ($p1>=50 ? 'bgcolor="#00FF00"' : '');
-                  $p2color = ($p2>=50 ? 'bgcolor="#00FF00"' : '');
+                  $p1color = ($p1>=50 ? 'bgcolor="#ffbf00"' : '');
+                  $p2color = ($p2>=50 ? 'bgcolor="#ffbf00"' : '');
                 }
                 $total1+=$data_provinsi['data_kpu']['chart'][21];
                 $total2+=$data_provinsi['data_kpu']['chart'][22];
@@ -120,8 +123,8 @@
                 if($jml2!=0){  
                   $p3 = ($data_provinsi['data_kawal']['sum']['pas1']/$jml2)*100;
                   $p4 = ($data_provinsi['data_kawal']['sum']['pas2']/$jml2)*100;
-                  $p3color = ($p3>=50 ? 'bgcolor="#FF0000"' : '');
-                  $p4color = ($p4>=50 ? 'bgcolor="#FF0000"' : '');
+                  $p3color = ($p3>=50 ? 'bgcolor="#ffbf00"' : '');
+                  $p4color = ($p4>=50 ? 'bgcolor="#ffbf00"' : '');
                 }
                 $total3+=$data_provinsi['data_kawal']['sum']['pas1'];
                 $total4+=$data_provinsi['data_kawal']['sum']['pas2'];

@@ -36,11 +36,14 @@
                $str.="<td>$i</td>";               
                $str.="<td>$data_provinsi[nama]</td>";               
                $jml=array($data_provinsi['data_kpu'][21],$data_provinsi['data_kpu'][22]);
-               $str.=jumlahkan($jml,'bgcolor="#00FF00"',$total1);               
+               $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total1);               
                
-               $str.='<td align="right">'.number_format($data_provinsi['data_kpu']['persen'],2,',','.').'</td>';               
+               $p = $data_provinsi['data_kpu']['persen'];
+               $pcolor = $p>90 ? 'bgcolor="#0080ff"': ($p>80 ? 'bgcolor="#00ffff"': ($p>50 ? 'bgcolor="#ffff00"' :'')) ;
+
+               $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';
                $jml=array($data_provinsi['data_kawal']['sum']['pas1'],$data_provinsi['data_kawal']['sum']['pas2']);
-               $str.=jumlahkan($jml,'bgcolor="#FF0000"',$total2);               
+               $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total2);               
              $str.='</tr>';              
              $i++;
            }          
@@ -65,11 +68,14 @@
                $str.="<td>$i</td>";               
                $str.="<td><a href='kec.php?p1=$kode_provinsi&p2=$data_provinsi[kode]'>$data_provinsi[nama]</a></td>";               
                $jml=array($data_provinsi['data_kpu'][21],$data_provinsi['data_kpu'][22]);
-               $str.=jumlahkan($jml,'bgcolor="#00FF00"',$total1);               
+               $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total1);               
                
-               $str.='<td align="right">'.number_format($data_provinsi['data_kpu']['persen'],2,',','.').'</td>';               
+               $p = $data_provinsi['data_kpu']['persen'];
+               $pcolor = $p>90 ? 'bgcolor="#0080ff"': ($p>80 ? 'bgcolor="#00ffff"': ($p>50 ? 'bgcolor="#ffff00"' :'')) ;
+
+               $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';               
                $jml=array($data_provinsi['data_kawal']['sum']['pas1'],$data_provinsi['data_kawal']['sum']['pas2']);
-               $str.=jumlahkan($jml,'bgcolor="#FF0000"',$total2);               
+               $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total2);               
              $str.='</tr>';              
              $i++;
            }
@@ -78,7 +84,7 @@
                $tmpstr.="<td colspan='2' >TOTAL</td>";               
                $tmpstr.= jumlahkan($total1);
                $tmpstr.='<td ></td>';
-               $tmpstr.= jumlahkan($total2,'bgcolor="#FF0000"');
+               $tmpstr.= jumlahkan($total2,'bgcolor="#ffbf00"');
              $tmpstr.='</tr>';             
 
            echo table_header('Kabupaten/Kota').$tmpstr.$str;  
