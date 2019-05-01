@@ -42,7 +42,12 @@
 
                $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';
                $jml=array($data_provinsi['data_kawal']['sum']['pas1'],$data_provinsi['data_kawal']['sum']['pas2']);
-               $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total2);               
+               $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total2); 
+
+               $p = ($data_provinsi['data_kawal']['sum']['cakupan']/$data_provinsi['data_kawal']['sum']['jml_tps'])*100;
+               $pcolor = $p>90 ? 'bgcolor="#0080ff"': ($p>80 ? 'bgcolor="#00ffff"': ($p>50 ? 'bgcolor="#ffff00"' :'')) ;
+               $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';               
+
              $str.='</tr>';              
              $i++;
            }          
@@ -74,12 +79,19 @@
                $pcolor = $p>90 ? 'bgcolor="#0080ff"': ($p>80 ? 'bgcolor="#00ffff"': ($p>50 ? 'bgcolor="#ffff00"' :'')) ;
 
                $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';
+               $p=0;
                if(isset($data_provinsi['data_kawal'])){
                  $jml=array($data_provinsi['data_kawal']['sum']['pas1'],$data_provinsi['data_kawal']['sum']['pas2']);
                  $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total2); 
+                 $p = ($data_provinsi['data_kawal']['sum']['cakupan']/$data_provinsi['data_kawal']['sum']['jml_tps'])*100;
                }else{
                  $str.='<td colspan="4" align="center" >Tidak Ada Data</td>';
                }
+
+               
+               $pcolor = $p>90 ? 'bgcolor="#0080ff"': ($p>80 ? 'bgcolor="#00ffff"': ($p>50 ? 'bgcolor="#ffff00"' :'')) ;
+               $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';               
+
              $str.='</tr>';              
              $i++;
            }

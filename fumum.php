@@ -30,7 +30,7 @@
 				           <th rowspan="3" >No</th>
 				           <th rowspan="3">'.$name.'</th>
 				           <th colspan="5">Data KPU</th>
-				           <th colspan="4">Data KawalPemilu</th>           
+				           <th colspan="5">Data KawalPemilu</th>           
 				       </tr> 
 				       <tr>
 				         <th colspan="2"> Kandidat 1</th>
@@ -38,6 +38,7 @@
 				         <th rowspan="2"> % suara masuk </th>
 				         <th colspan="2"> Kandidat 1</th>
 				         <th colspan="2"> Kandidat 2</th>
+				         <th rowspan="2"> % suara masuk </th>
 				       </tr>
 				       <tr>
 				         <th>Jumlah '.$name.'</th>
