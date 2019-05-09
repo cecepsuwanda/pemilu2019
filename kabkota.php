@@ -72,6 +72,7 @@
              $str.='<tr>';
                $str.="<td>$i</td>";               
                $str.="<td><a href='kec.php?p1=$kode_provinsi&p2=$data_provinsi[kode]'>$data_provinsi[nama]</a></td>";               
+               
                $jml=array($data_provinsi['data_kpu'][21],$data_provinsi['data_kpu'][22]);
                $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total1);               
                
@@ -79,6 +80,7 @@
                $pcolor = $p>90 ? 'bgcolor="#0080ff"': ($p>80 ? 'bgcolor="#00ffff"': ($p>50 ? 'bgcolor="#ffff00"' :'')) ;
 
                $str.='<td align="right" '.$pcolor.'>'.number_format($p,2,',','.').'</td>';               
+               
                $jml=array($data_provinsi['data_kawal']['sum']['pas1'],$data_provinsi['data_kawal']['sum']['pas2']);
                $str.=jumlahkan($jml,'bgcolor="#ffbf00"',$total2);
 

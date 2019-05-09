@@ -6,6 +6,7 @@
   
 
  $proses = new proses();
+ $update_err=$proses->insert_provinsi(); 
  $update_err=$proses->update_provinsi(); 
 ?>
 

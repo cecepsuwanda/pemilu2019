@@ -60,7 +60,18 @@ class proses
 	       }
 	       
 	       if (!empty($new_rec)) {
-	        $db_pemilu->update_provinsi(array('_id'=>$data['_id']),array('$set'=>$new_rec),[]); 
+	          if(($data['data_kpu'][21]!=$new_rec['data_kpu'][21]) or ($data['data_kpu'][22]!=$new_rec['data_kpu'][22])){
+                $new_rec['kpu_berubah']=1;    
+	          }else{
+	          	$new_rec['kpu_berubah']=0;
+	          }
+	          if(($data['data_kawal']->sum->pas1!=$new_rec['data_kawal']->sum->pas1) or ($data['data_kawal']->sum->pas2!=$new_rec['data_kawal']->sum->pas2)){
+	          	$new_rec['kawal_berubah']=1;	          	
+	          }else{
+	          	$new_rec['kawal_berubah']=0;
+	          }
+	          $db_pemilu->update_provinsi(array('_id'=>$data['_id']),array('$unset'=>['data_kpu'=>true,'data_kawal'=>true,'berubah'=>true]),[]); 
+	          $db_pemilu->update_provinsi(array('_id'=>$data['_id']),array('$set'=>$new_rec),[]); 
 	       } 
 
 	    }
@@ -115,14 +126,29 @@ class proses
 	         $data_kabkotas = $db_pemilu->get_kabkota(array('kode_provinsi'=>$data_provinsi['kode']),[]);
 	           foreach ($data_kabkotas as $data_kabkota) {
 	              
-	              $new_rec=array();
+	              $new_rec=array();	              
 	              if(!empty($kpu_kabkota) and isset($kpu_kabkota[$data_kabkota['kode']]['jml_suara'])){  
 	                $new_rec['data_kpu']= $kpu_kabkota[$data_kabkota['kode']]['jml_suara'];
 	              }
 	              if(!empty($kawal_kabkota) and isset($kawal_kabkota[$data_kabkota['kode']]) ){
 	                $new_rec['data_kawal']= $kawal_kabkota[$data_kabkota['kode']];            
 	              }
-	              if(!empty($new_rec)){
+	              if(!empty($new_rec)){	              	
+	              	if(isset($new_rec['data_kpu'])){
+	              	  if(($data_kabkota['data_kpu'][21]!=$new_rec['data_kpu'][21]) or ($data_kabkota['data_kpu'][22]!=$new_rec['data_kpu'][22])){
+                        $new_rec['kpu_berubah']=1;    
+	                  }else{
+	          	        $new_rec['kpu_berubah']=0;
+	                  }
+                    }
+                    if(isset($data_kabkota['data_kawal'])){
+		                if(($data_kabkota['data_kawal']->sum->pas1!=$new_rec['data_kawal']->sum->pas1) or ($data_kabkota['data_kawal']->sum->pas2!=$new_rec['data_kawal']->sum->pas2)){
+		          	       	$new_rec['kawal_berubah']=1;	          	
+		                }else{
+		          	       $new_rec['kawal_berubah']=0;
+		                }
+		            }    
+	                $db_pemilu->update_kabkota(array('_id'=>$data_kabkota['_id']),array('$unset'=>['data_kpu'=>true,'data_kawal'=>true,'berubah'=>true]),[]); 
 	                $db_pemilu->update_kabkota(array('_id'=>$data_kabkota['_id']),array('$set'=>$new_rec),[]); 
 	              }
 	           }           
@@ -181,8 +207,7 @@ class proses
 		         $kpu_kec = $data_kpu->get_data(array($data_kabkota['kode_provinsi'],$data_kabkota['kode']));         
 
 		         $data_kecs = $db_pemilu->get_kec(array('kode_kabkota'=>$data_kabkota['kode']),[]);
-		           foreach ($data_kecs as $data_kec) {
-		              
+		           foreach ($data_kecs as $data_kec) {    
 		              $new_rec=array();
 		              if(!empty($kpu_kec) and isset($kpu_kec[$data_kec['kode']]['jml_suara'])){  
 		                $new_rec['data_kpu']= $kpu_kec[$data_kec['kode']]['jml_suara'];
@@ -191,6 +216,22 @@ class proses
 		                $new_rec['data_kawal']= $kawal_kec[$data_kec['kode']];            
 		              }
 		              if(!empty($new_rec)){
+		              	if(isset($data_kec['data_kpu'])){
+			              	if(($data_kec['data_kpu'][21]!=$new_rec['data_kpu'][21]) or ($data_kec['data_kpu'][22]!=$new_rec['data_kpu'][22])){
+	                          $new_rec['kpu_berubah']=1;    
+		                    }else{
+		          	          $new_rec['kpu_berubah']=0;
+		                    }
+                        }
+                        if(isset($data_kec['data_kawal'])){
+		                    if(($data_kec['data_kawal']->sum->pas1!=$new_rec['data_kawal']->sum->pas1) or ($data_kec['data_kawal']->sum->pas2!=$new_rec['data_kawal']->sum->pas2)){
+		          	           	$new_rec['kawal_berubah']=1;	          	
+		                    }else{
+		          	            $new_rec['kawal_berubah']=0;
+		                    }
+		                 }   
+
+		                $db_pemilu->update_kabkota(array('_id'=>$data_kec['_id']),array('$unset'=>['data_kpu'=>true,'data_kawal'=>true,'berubah'=>true]),[]); 
 		                $db_pemilu->update_kec(array('_id'=>$data_kec['_id']),array('$set'=>$new_rec),[]); 
 		              }
 		           } 
@@ -260,7 +301,22 @@ class proses
 	              if(!empty($kawal_kelurahan) and isset($kawal_kelurahan[$data_kelurahan['kode']]) ){
 	                $new_rec['data_kawal']= $kawal_kelurahan[$data_kelurahan['kode']];            
 	              }
-	              if(!empty($new_rec)){
+	              if(!empty($new_rec)){	              	  
+	              	  if (isset($data_kelurahan['data_kpu'])) {
+		              	  if(($data_kelurahan['data_kpu'][21]!=$new_rec['data_kpu'][21]) or ($data_kelurahan['data_kpu'][22]!=$new_rec['data_kpu'][22])){
+			                $new_rec['kpu_berubah']=1;    
+		                  }else{
+		          	          $new_rec['kpu_berubah']=0;
+		                  }
+		              }
+		              if(isset($data_kelurahan['data_kawal'])){
+				          if(($data_kelurahan['data_kawal']->sum->pas1!=$new_rec['data_kawal']->sum->pas1) or ($data_kelurahan['data_kawal']->sum->pas2!=$new_rec['data_kawal']->sum->pas2)){
+				             	$new_rec['kawal_berubah']=1;	          	
+		                  }else{
+		          	           $new_rec['kawal_berubah']=0;
+		                  }
+		              }    
+	                $db_pemilu->update_kelurahan(array('_id'=>$data_kelurahan['_id']),array('$unset'=>['data_kpu'=>true,'data_kawal'=>true,'berubah'=>true]),[]); 
 	                $db_pemilu->update_kelurahan(array('_id'=>$data_kelurahan['_id']),array('$set'=>$new_rec),[]); 
 	              }
 	           }
@@ -364,6 +420,21 @@ class proses
 	              }
 	             
 	             if(!empty($new_rec)){
+	                if(isset($data_tps['data_kpu'])){		                
+		                if(($data_tps['data_kpu']->chart[21]!=$new_rec['data_kpu']->chart[21]) or ($data_tps['data_kpu']->chart[22]!=$new_rec['data_kpu']->chart[22])){
+	                      $new_rec['kpu_berubah']=1;    
+		                }else{
+		          	          $new_rec['kpu_berubah']=0;
+		                }
+	                }
+	                if(isset($data_tps['data_kawal'])){		                
+		                if(($data_tps['data_kawal']->sum->pas1!=$new_rec['data_kawal']->sum->pas1) or ($data_tps['data_kawal']->sum->pas2!=$new_rec['data_kawal']->sum->pas2)){
+		          	      	$new_rec['kawal_berubah']=1;	          	
+		                }else{
+		          	        $new_rec['kawal_berubah']=0;
+		                }
+		            }    
+	                $db_pemilu->update_tps(array('_id'=>$data_tps['_id']),array('$unset'=>['data_kpu'=>true,'data_kawal'=>true,'berubah'=>true]),[]); 
 	                $db_pemilu->update_tps(array('_id'=>$data_tps['_id']),array('$set'=>$new_rec),[]);    
 	              }
 	           }           
