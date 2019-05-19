@@ -120,7 +120,7 @@ class proses
 	    foreach ($data_provinsis as $data_provinsi) {
 	        
 	         $kawal_kabkota = $data_kawal->get_data($data_provinsi['kode']);      
-	         $kpu_kabkotas = $data_kpu->get_data(array($data_provinsi['kode']));
+	         $kpu_kabkota = $data_kpu->get_data(array($data_provinsi['kode']));
 	         
 
 	         $data_kabkotas = $db_pemilu->get_kabkota(array('kode_provinsi'=>$data_provinsi['kode']),[]);
@@ -148,6 +148,7 @@ class proses
 		          	       $new_rec['kawal_berubah']=0;
 		                }
 		            }    
+	                 
 	                $db_pemilu->update_kabkota(array('_id'=>$data_kabkota['_id']),array('$unset'=>['data_kpu'=>true,'data_kawal'=>true,'berubah'=>true]),[]); 
 	                $db_pemilu->update_kabkota(array('_id'=>$data_kabkota['_id']),array('$set'=>$new_rec),[]); 
 	              }
